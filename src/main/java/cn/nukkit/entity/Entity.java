@@ -79,6 +79,8 @@ import cn.nukkit.utils.ChunkException;
 import cn.nukkit.utils.Identifier;
 import cn.nukkit.utils.PortalHelper;
 import cn.nukkit.utils.TextFormat;
+import lombok.extern.slf4j.Slf4j;
+
 import com.google.common.collect.Iterables;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -93,6 +95,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author MagicDroidX
  */
+@Slf4j
 public abstract class Entity extends Location implements Metadatable, EntityID, EntityDataTypes {
     public static final Entity[] EMPTY_ARRAY = new Entity[0];
     protected final EntityDataMap entityDataMap = new EntityDataMap();
@@ -819,6 +822,10 @@ public abstract class Entity extends Location implements Metadatable, EntityID, 
             }
 
             player.dataPacket(packet);
+        }
+
+        if(oldEffect != null){
+            oldEffect.remove(this);
         }
 
         effect.add(this);

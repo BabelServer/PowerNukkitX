@@ -16,8 +16,8 @@ public class EffectHealthBoost extends Effect {
 
     public void remove(Entity entity) {
         entity.setMaxHealth(entity.getMaxHealth() - 4 * this.getLevel());
-        if (entity.getHealth() > entity.getMaxHealth()){
-            entity.setHealth(entity.getMaxHealth());
-        }
+        // if (entity.getHealth() > entity.getMaxHealth()){
+        //     entity.setHealth(entity.getMaxHealth());
+        // }
     }
 }
