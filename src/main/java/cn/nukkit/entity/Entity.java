@@ -824,10 +824,6 @@ public abstract class Entity extends Location implements Metadatable, EntityID, 
             player.dataPacket(packet);
         }
 
-        if(oldEffect != null){
-            oldEffect.remove(this);
-        }
-
         effect.add(this);
         effects.put(effect.getType(), effect);
 
