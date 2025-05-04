@@ -167,7 +167,17 @@ public class LoginPacket extends DataPacket {
     private JsonObject decodeToken(String token) {
         String[] base = token.split("\\.");
         if (base.length < 2) return null;
-        return new Gson().fromJson(new String(Base64.getDecoder().decode(base[1]), StandardCharsets.UTF_8), JsonObject.class);
+
+        try{
+            String decoded = new String(Base64.getDecoder().decode(base[1]), StandardCharsets.UTF_8);
+            return new Gson().fromJson(decoded, JsonObject.class);
+        }catch(Exception e){
+            e.printStackTrace();
+
+            System.out.println(base[1]);
+        }
+
+        return null;
     }
 
     private static SkinAnimation getAnimation(JsonObject element) {
