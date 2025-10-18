@@ -84,6 +84,9 @@ public class ItemRuntimeIdRegistry implements IRegistry<String, Integer, Integer
 
             for (JsonElement element : items) {
                 JsonObject item = element.getAsJsonObject();
+
+                if (item.get("name").getAsString().contains("_horse_armor")) continue;
+
                 register1(new ItemData(item.get("name").getAsString(), item.get("id").getAsInt(), item.get("version").getAsInt(), item.get("componentBased").getAsBoolean()));
             }
             trim();

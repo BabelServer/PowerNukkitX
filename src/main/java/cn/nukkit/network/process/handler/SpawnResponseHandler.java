@@ -36,15 +36,20 @@ public class SpawnResponseHandler extends BedrockSessionPacketHandler {
         for(ItemRuntimeIdRegistry.ItemData data : ItemRuntimeIdRegistry.getITEMDATA()) {
             CompoundTag tag = new CompoundTag();
 
-            if (ItemRegistry.getItemComponents().containsCompound(data.identifier())) {
+            boolean componentBasedOverride = data.componentBased();
+
+            if (Registries.ITEM.getCustomItemDefinition().containsKey(data.identifier())) {
+                tag = Registries.ITEM.getCustomItemDefinition().get(data.identifier()).nbt();
+
+                if (data.identifier().equals("minecraft:leather_horse_armor") || data.identifier().equals("minecraft:golden_horse_armor") || data.identifier().equals("minecraft:diamond_horse_armor")) {
+                    componentBasedOverride = true;
+                }
+            } else if (ItemRegistry.getItemComponents().containsCompound(data.identifier())) {
                 CompoundTag item_tag = ItemRegistry.getItemComponents().getCompound(data.identifier());
                 tag.putCompound("components", item_tag.getCompound("components"));
             }
-            else if (Registries.ITEM.getCustomItemDefinition().containsKey(data.identifier())) {
-                tag = Registries.ITEM.getCustomItemDefinition().get(data.identifier()).nbt();
-            }
 
-            entries.add(new ItemRegistryPacket.Entry(data.identifier(), data.runtimeId(), data.version(), data.componentBased(), tag));
+            entries.add(new ItemRegistryPacket.Entry(data.identifier(), data.runtimeId(), data.version(), componentBasedOverride, tag));
         }
 
         itemRegistryPacket.setEntries(entries.toArray(ItemRegistryPacket.Entry.EMPTY_ARRAY));

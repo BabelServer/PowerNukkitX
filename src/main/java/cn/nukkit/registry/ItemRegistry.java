@@ -176,7 +176,7 @@ public final class ItemRegistry implements ItemID, IRegistry<String, Item, Class
             register(DIAMOND_CHESTPLATE, ItemDiamondChestplate.class);
             register(DIAMOND_HELMET, ItemDiamondHelmet.class);
             register(DIAMOND_HOE, ItemDiamondHoe.class);
-            register(DIAMOND_HORSE_ARMOR, ItemDiamondHorseArmor.class);
+            // register(DIAMOND_HORSE_ARMOR, ItemDiamondHorseArmor.class);
             register(DIAMOND_LEGGINGS, ItemDiamondLeggings.class);
             register(DIAMOND_PICKAXE, ItemDiamondPickaxe.class);
             register(DIAMOND_SHOVEL, ItemDiamondShovel.class);
@@ -249,7 +249,7 @@ public final class ItemRegistry implements ItemID, IRegistry<String, Item, Class
             register(GOLDEN_CHESTPLATE, ItemGoldenChestplate.class);
             register(GOLDEN_HELMET, ItemGoldenHelmet.class);
             register(GOLDEN_HOE, ItemGoldenHoe.class);
-            register(GOLDEN_HORSE_ARMOR, ItemGoldenHorseArmor.class);
+            // register(GOLDEN_HORSE_ARMOR, ItemGoldenHorseArmor.class);
             register(GOLDEN_LEGGINGS, ItemGoldenLeggings.class);
             register(GOLDEN_PICKAXE, ItemGoldenPickaxe.class);
             register(GOLDEN_SHOVEL, ItemGoldenShovel.class);
@@ -300,7 +300,7 @@ public final class ItemRegistry implements ItemID, IRegistry<String, Item, Class
             register(LEATHER_BOOTS, ItemLeatherBoots.class);
             register(LEATHER_CHESTPLATE, ItemLeatherChestplate.class);
             register(LEATHER_HELMET, ItemLeatherHelmet.class);
-            register(LEATHER_HORSE_ARMOR, ItemLeatherHorseArmor.class);
+            // register(LEATHER_HORSE_ARMOR, ItemLeatherHorseArmor.class);
             register(LEATHER_LEGGINGS, ItemLeatherLeggings.class);
             register(LEAVES, ItemLeaves.class);
             register(LEAVES2, ItemLeaves2.class);
