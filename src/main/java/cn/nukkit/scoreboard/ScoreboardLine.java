@@ -14,7 +14,7 @@ public class ScoreboardLine implements IScoreboardLine{
     protected final IScoreboard scoreboard;
     protected final IScorer scorer;
     protected final long lineId;
-    protected int score;
+    protected long score;
 
     public ScoreboardLine(IScoreboard scoreboard, IScorer scorer) {
         this(scoreboard, scorer, 0);
@@ -28,7 +28,7 @@ public class ScoreboardLine implements IScoreboardLine{
     }
 
     @Override
-    public boolean setScore(int score) {
+    public boolean setScore(long score) {
         if (scoreboard.shouldCallEvent()) {
             var event = new ScoreboardLineChangeEvent(scoreboard, this, score, this.score, ScoreboardLineChangeEvent.ActionType.SCORE_CHANGE);
             Server.getInstance().getPluginManager().callEvent(event);

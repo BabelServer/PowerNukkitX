@@ -63,6 +63,6 @@ public class PlayerScorer implements IScorer {
     @Override
     public SetScorePacket.ScoreInfo toNetworkInfo(IScoreboard scoreboard, IScoreboardLine line) {
         if (uuid == null) return null;
-        return Server.getInstance().getPlayer(uuid).isPresent() ? new SetScorePacket.ScoreInfo(line.getLineId(), scoreboard.getObjectiveName(), line.getScore(), ScorerType.PLAYER, Server.getInstance().getPlayer(uuid).get().getId()) : null;
+        return Server.getInstance().getPlayer(uuid).isPresent() ? new SetScorePacket.ScoreInfo(line.getLineId(), scoreboard.getObjectiveName(), (int) line.getScore(), ScorerType.PLAYER, Server.getInstance().getPlayer(uuid).get().getId()) : null;
     }
 }

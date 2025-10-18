@@ -34,28 +34,28 @@ public interface IScoreboardLine {
      * 获取分数
      * @return 分数
      */
-    int getScore();
+    long getScore();
 
     /**
      * 设置分数
      * @param score 分数
      * @return 是否成功（事件被撤回就会false）
      */
-    boolean setScore(int score);
+    boolean setScore(long score);
 
     /**
      * 增加分数
      * @param addition 增加量
      * @return 是否成功（事件被撤回就会false）
      */
-    default boolean addScore(int addition) {return setScore(getScore() + addition);}
+    default boolean addScore(long addition) {return setScore(getScore() + addition);}
 
     /**
      * 减少分数
      * @param reduction 减少量
      * @return 是否成功（事件被撤回就会false）
      */
-    default boolean removeScore(int reduction) {return setScore(getScore() - reduction);}
+    default boolean removeScore(long reduction) {return setScore(getScore() - reduction);}
 
     /**
      * 内部方法

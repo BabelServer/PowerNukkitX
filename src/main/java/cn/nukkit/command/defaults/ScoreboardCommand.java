@@ -339,7 +339,7 @@ public class ScoreboardCommand extends VanillaCommand {
                             log.addError("commands.scoreboard.players.score.notFound", objectiveName, scorer.getName()).output();
                             return 0;
                         }
-                        int score = line.getScore();
+                        long score = line.getScore();
                         if (score < min || score > max) {
                             log.addError("commands.scoreboard.players.test.failed", String.valueOf(score), String.valueOf(min), String.valueOf(max)).output();
                             return 0;
@@ -469,9 +469,9 @@ public class ScoreboardCommand extends VanillaCommand {
                     log.addError("commands.scoreboard.players.operation.notFound", selectorObjectiveName, selectorScorer.getName()).output();
                     return 0;
                 }
-                int targetScore = targetScoreboard.getLines().get(targetScorer).getScore();
-                int selectorScore = selectorScoreboard.getLines().get(selectorScorer).getScore();
-                int changedScore = -1;
+                long targetScore = targetScoreboard.getLines().get(targetScorer).getScore();
+                long selectorScore = selectorScoreboard.getLines().get(selectorScorer).getScore();
+                long changedScore = -1;
                 switch (operation) {
                     case "+=" -> {
                         changedScore = targetScore + selectorScore;

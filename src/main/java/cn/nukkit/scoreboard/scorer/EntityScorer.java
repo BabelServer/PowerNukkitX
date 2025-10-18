@@ -48,6 +48,6 @@ public class EntityScorer implements IScorer {
 
     @Override
     public SetScorePacket.ScoreInfo toNetworkInfo(IScoreboard scoreboard, IScoreboardLine line) {
-        return new SetScorePacket.ScoreInfo(line.getLineId(), scoreboard.getObjectiveName(), line.getScore(), ScorerType.ENTITY, entityUuid.getMostSignificantBits());
+        return new SetScorePacket.ScoreInfo(line.getLineId(), scoreboard.getObjectiveName(), (int) line.getScore(), ScorerType.ENTITY, entityUuid.getMostSignificantBits());
     }
 }

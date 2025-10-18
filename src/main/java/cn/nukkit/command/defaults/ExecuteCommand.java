@@ -546,8 +546,8 @@ public class ExecuteCommand extends VanillaCommand {
                     return 0;
                 }
 
-                int targetScore = targetScoreboard.getLines().get(targetScorer).getScore();
-                int sourceScore = sourceScoreboard.getLines().get(sourceScorer).getScore();
+                long targetScore = targetScoreboard.getLines().get(targetScorer).getScore();
+                long sourceScore = sourceScoreboard.getLines().get(sourceScorer).getScore();
 
                 matched = switch (operation) {
                     case "<" -> targetScore < sourceScore;
@@ -595,7 +595,7 @@ public class ExecuteCommand extends VanillaCommand {
                 }
                 var targetScoreboard = manager.getScoreboards().get(targetObjectiveName);
 
-                int targetScore = targetScoreboard.getLines().get(targetScorer).getScore();
+                long targetScore = targetScoreboard.getLines().get(targetScorer).getScore();
                 String range = list.getResult(5);
                 if (range.contains("..")) {
                     //条件为一个区间

@@ -20,15 +20,15 @@ public class ScoreboardLineChangeEvent extends ScoreboardEvent {
     }
 
     private @Nullable final IScoreboardLine line;
-    private int newValue;
-    private int oldValue;
+    private long newValue;
+    private long oldValue;
     private final ActionType actionType;
 
-    public ScoreboardLineChangeEvent(IScoreboard scoreboard, @Nullable IScoreboardLine line, int newValue, int oldValue){
+    public ScoreboardLineChangeEvent(IScoreboard scoreboard, @Nullable IScoreboardLine line, long newValue, long oldValue){
         this(scoreboard,line,newValue,oldValue,ActionType.SCORE_CHANGE);
     }
 
-    public ScoreboardLineChangeEvent(IScoreboard scoreboard, @Nullable IScoreboardLine line, int newValue, int oldValue, ActionType actionType) {
+    public ScoreboardLineChangeEvent(IScoreboard scoreboard, @Nullable IScoreboardLine line, long newValue, long oldValue, ActionType actionType) {
         super(scoreboard);
         this.line = line;
         this.newValue = newValue;

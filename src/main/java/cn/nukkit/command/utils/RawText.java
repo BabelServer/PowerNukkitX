@@ -76,7 +76,10 @@ public class RawText {
             return null;
         String name_str = component.component_score.name;
         IScorer scorer = null;
-        Integer value = component.component_score.value;
+        Long value = null;
+        if (component.component_score.value instanceof Number num) {
+            value = num.longValue();
+        }
 
         if (name_str.equals("*")) {
             if (!sender.isEntity())
