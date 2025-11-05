@@ -20,7 +20,7 @@ public class ScoreboardLine implements IScoreboardLine{
         this(scoreboard, scorer, 0);
     }
 
-    public ScoreboardLine(IScoreboard scoreboard, IScorer scorer, int score) {
+    public ScoreboardLine(IScoreboard scoreboard, IScorer scorer, long score) {
         this.scoreboard = scoreboard;
         this.scorer = scorer;
         this.score = score;

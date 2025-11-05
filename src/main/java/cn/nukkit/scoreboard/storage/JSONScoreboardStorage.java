@@ -109,7 +109,7 @@ public class JSONScoreboardStorage implements IScoreboardStorage {
         List<Map<String, Object>> lines = new ArrayList<>();
         for (IScoreboardLine e : scoreboard.getLines().values()) {
             Map<String, Object> line = new HashMap<>();
-            line.put("score", e.getScore());
+            line.put("score", "" + e.getScore());
             line.put("scorerType", e.getScorer().getScorerType().name());
             line.put("name", switch (e.getScorer().getScorerType()) {
                 case PLAYER -> ((PlayerScorer) e.getScorer()).getUuid().toString();
@@ -130,7 +130,9 @@ public class JSONScoreboardStorage implements IScoreboardStorage {
         SortOrder sortOrder = SortOrder.valueOf(map.get("sortOrder").toString());
         IScoreboard scoreboard = new Scoreboard(objectiveName, displayName, criteriaName, sortOrder);
         for (Map<String, Object> line : (List<Map<String, Object>>) map.get("lines")) {
-            int score = ((Double) line.get("score")).intValue();
+            long score;
+            if (line.get("score") instanceof Double) score = ((Double) line.get("score")).longValue();
+                else score = Long.parseLong(((String) line.get("score")));
             IScorer scorer = null;
             switch (line.get("scorerType").toString()) {
                 case "PLAYER":
