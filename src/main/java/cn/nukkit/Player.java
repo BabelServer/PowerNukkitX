@@ -2250,11 +2250,10 @@ public class Player extends EntityHuman implements CommandSender, ChunkLoader, I
 
         if (this.needDimensionChangeACK) {
             this.needDimensionChangeACK = false;
-
-            PlayerActionPacket playerActionPacket = new PlayerActionPacket();
-            playerActionPacket.action = PlayerActionPacket.ACTION_DIMENSION_CHANGE_ACK;
-            playerActionPacket.entityId = this.getId();
-            this.dataPacket(playerActionPacket);
+            PlayerActionPacket pap = new PlayerActionPacket();
+            pap.action = PlayerActionPacket.ACTION_DIMENSION_CHANGE_ACK;
+            pap.entityId = this.getId();
+            this.dataPacket(pap);
         }
     }
 
@@ -5572,5 +5571,28 @@ public class Player extends EntityHuman implements CommandSender, ChunkLoader, I
 
     public String getXUID() {
         return this.loginChainData.getXUID();
+    }
+
+    /**
+     * Returns the flight status of player
+     */
+    public boolean isFlying() {
+        return this.getAdventureSettings().get(Type.FLYING);
+    }
+
+    /**
+     * Sets the flight status of player. If you want to work it properly, you need to use {@link #setAllowFlight}
+     *
+     * @param value Status value
+     */
+    public void setFlying(boolean value) {
+        boolean isFlying = this.isFlying();
+
+        if (value != isFlying){
+            this.resetFallDistance();
+
+            this.getAdventureSettings().set(Type.FLYING, value);
+            this.getAdventureSettings().update();
+        }
     }
 }
