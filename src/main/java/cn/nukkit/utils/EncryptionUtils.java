@@ -41,7 +41,7 @@ import java.util.*;
 
 /**
  * Took from CloudburstMC Protocol.
- * https://github.com/CloudburstMC/Protocol/blob/3.0/bedrock-connection/src/main/java/org/cloudburstmc/protocol/bedrock/util/EncryptionUtils.java
+ * <a href="https://github.com/CloudburstMC/Protocol/blob/3.0/bedrock-connection/src/main/java/org/cloudburstmc/protocol/bedrock/util/EncryptionUtils.java">...</a>
  */
 
 @UtilityClass
@@ -338,7 +338,7 @@ public class EncryptionUtils {
     }
 
     /**
-     * Create handshake JWS used in the {@link}
+     * Create handshake JWS used in the {@link cn.nukkit.network.protocol.ServerToClientHandshakePacket}
      * which completes the encryption handshake.
      *
      * @param serverKeyPair used to sign the JWT

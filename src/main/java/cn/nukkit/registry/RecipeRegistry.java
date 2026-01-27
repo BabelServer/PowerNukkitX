@@ -11,6 +11,7 @@ import cn.nukkit.recipe.descriptor.DefaultDescriptor;
 import cn.nukkit.recipe.descriptor.ItemDescriptor;
 import cn.nukkit.recipe.descriptor.ItemDescriptorType;
 import cn.nukkit.recipe.descriptor.ItemTagDescriptor;
+import cn.nukkit.recipe.special.SmithingArmorTrimCorrectedRecipe;
 import cn.nukkit.recipe.special.DecoratedPotRecipe;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.Identifier;
@@ -52,7 +53,7 @@ public class RecipeRegistry implements IRegistry<String, Recipe, Recipe> {
      * 缓存着配方数据包
      */
     private static ByteBuf buffer = null;
-    private final VanillaRecipeParser vanillaRecipeParser = new VanillaRecipeParser(this);
+    private final VanillaRecipeParser vanillaRecipeParser = new VanillaRecipeParser();
     private final EnumMap<RecipeType, Int2ObjectArrayMap<Set<Recipe>>> recipeMaps = new EnumMap<>(RecipeType.class);
     private final Object2ObjectOpenHashMap<String, Recipe> allRecipeMaps = new Object2ObjectOpenHashMap<>();
     private final Object2DoubleOpenHashMap<Recipe> recipeXpMap = new Object2DoubleOpenHashMap<>();
@@ -900,6 +901,7 @@ public class RecipeRegistry implements IRegistry<String, Recipe, Recipe> {
 
     private void registerSpecial() {
         this.register(new DecoratedPotRecipe());
+        this.register(new SmithingArmorTrimCorrectedRecipe());
     }
 
     /**
