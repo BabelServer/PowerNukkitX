@@ -475,6 +475,12 @@ public class LevelDBProvider implements LevelProvider {
     public void saveChunks() {
         for (IChunk chunk : this.chunks.values()) {
             if (chunk.getChanges() != 0) {
+                if (!chunk.isInitiated()) {
+                    log.warn("Uninitialized chunk was about to be saved. skipping...");
+
+                    continue;
+                }
+
                 chunk.setChanged(false);
                 this.saveChunk(chunk.getX(), chunk.getZ());
             }
