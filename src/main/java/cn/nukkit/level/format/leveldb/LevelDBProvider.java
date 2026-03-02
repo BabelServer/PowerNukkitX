@@ -476,16 +476,27 @@ public class LevelDBProvider implements LevelProvider {
 
     @Override
     public void saveChunks() {
+        List<int[]> chunksToReload = null;
         for (IChunk chunk : this.chunks.values()) {
             if (chunk.getChanges() != 0) {
                 if (!chunk.isInitiated()) {
-                    log.warn("Uninitialized chunk was about to be saved. skipping...");
-
+                    log.warn("Uninitialized chunk was about to be saved. Reloading from storage... pos: " + chunk.getX() + " " + chunk.getZ());
+                    if (chunksToReload == null) {
+                        chunksToReload = new ArrayList<>();
+                    }
+                    chunksToReload.add(new int[]{chunk.getX(), chunk.getZ()});
                     continue;
                 }
 
                 chunk.setChanged(false);
                 this.saveChunk(chunk.getX(), chunk.getZ());
+            }
+        }
+        if (chunksToReload != null) {
+            for (int[] pos : chunksToReload) {
+                long index = Level.chunkHash(pos[0], pos[1]);
+                this.chunks.remove(index);
+                this.loadChunk(pos[0], pos[1], false);
             }
         }
     }
