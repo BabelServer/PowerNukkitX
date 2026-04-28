@@ -34,7 +34,7 @@ public class BlockEntityShelf extends BlockEntitySpawnableContainer {
         for (int i = 0; i < itemsTag.size(); i++) {
             this.inventory.setItem(i, NBTIO.getItemHelper(itemsTag.get(i)));
         }
-        this.level.updateComparatorOutputLevel(this);
+        // this.level.updateComparatorOutputLevel(this);
     }
 
     @Override
