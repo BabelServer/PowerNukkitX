@@ -5,6 +5,8 @@ import cn.nukkit.api.UsedByReflection;
 import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
+import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityAsyncPrepare;
 import cn.nukkit.level.DimensionData;
 import cn.nukkit.level.GameRule;
 import cn.nukkit.level.GameRules;
@@ -25,6 +27,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.IntTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.network.protocol.types.GameType;
+import cn.nukkit.utils.BlockUpdateEntry;
 import cn.nukkit.utils.ChunkException;
 import cn.nukkit.utils.SemVersion;
 import cn.nukkit.utils.Utils;
@@ -35,6 +38,7 @@ import it.unimi.dsi.fastutil.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.iq80.leveldb.CompressionType;
 import org.iq80.leveldb.Options;
+import org.iq80.leveldb.WriteBatch;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedInputStream;
@@ -51,11 +55,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -201,21 +210,24 @@ public class LevelDBProvider implements LevelProvider {
         List<ScheduledTickInfo> scheduledList = LevelDBProvider.getScheduledTicksMap().remove(chunkKey);
         List<NormalTickInfo> normalList = LevelDBProvider.getNormalTicksMap().remove(chunkKey);
 
-        restoreScheduledTicks(level, scheduledList);
+        restoreScheduledTicks(level, chunk, scheduledList);
         restoreNormalTicks(level, chunk, normalList);
     }
 
-    private static void restoreScheduledTicks(Level level, List<ScheduledTickInfo> scheduledList) {
+    private static void restoreScheduledTicks(Level level, IChunk chunk, List<ScheduledTickInfo> scheduledList) {
         if (scheduledList == null || scheduledList.isEmpty()) return;
 
         for (ScheduledTickInfo info : scheduledList) {
-            level.getScheduler().scheduleDelayedTask(() -> {
-                Block block = level.getBlock(info.x, info.y, info.z, info.layer);
-                if (block.getId().equals(info.id)) {
-                    level.scheduleUpdate(block, new Vector3(info.x, info.y, info.z),
-                            Math.max(info.delay, 1), info.priority, false, info.checkBlockWhenUpdate);
-                }
-            }, 1);
+            Block block = level.getBlock(info.x, info.y, info.z, info.layer);
+            if (block.getId().equals(info.id)) {
+                chunk.getBlockUpdateScheduler().add(new BlockUpdateEntry(
+                        new Vector3(info.x, info.y, info.z),
+                        block,
+                        level.getCurrentTick() + Math.max(info.delay, 1),
+                        info.priority,
+                        info.checkBlockWhenUpdate
+                ));
+            }
         }
     }
 
@@ -486,7 +498,15 @@ public class LevelDBProvider implements LevelProvider {
 
     @Override
     public void saveChunks() {
+        saveChunks(this.chunks.values());
+    }
+
+    @Override
+    public void saveChunks(Collection<IChunk> chunks) {
         List<int[]> chunksToReload = null;
+
+        Collection<IChunk> newChunks = new ArrayList<>();
+
         for (IChunk chunk : this.chunks.values()) {
             if (chunk.getChanges() != 0) {
                 if (!chunk.isInitiated()) {
@@ -494,12 +514,12 @@ public class LevelDBProvider implements LevelProvider {
                     if (chunksToReload == null) {
                         chunksToReload = new ArrayList<>();
                     }
+
                     chunksToReload.add(new int[]{chunk.getX(), chunk.getZ()});
                     continue;
                 }
 
-                chunk.setChanged(false);
-                this.saveChunk(chunk.getX(), chunk.getZ());
+                newChunks.add(chunk);
             }
         }
         if (chunksToReload != null) {
@@ -508,6 +528,19 @@ public class LevelDBProvider implements LevelProvider {
                 this.chunks.remove(index);
                 this.loadChunk(pos[0], pos[1], false);
             }
+        }
+
+        try (WriteBatch batch = storage.createBatch()) {
+            WriteBatchHelper helper = new WriteBatchHelper();
+            CompletableFuture.runAsync(() -> newChunks.parallelStream().filter(IChunk::hasChanged).forEach(chunk -> {
+                LevelDBChunkSerializer.INSTANCE.serialize(helper, chunk);
+                chunk.setChanged(false);
+            }), Server.getInstance().getComputeThreadPool()).join();
+            helper.write(batch);
+            helper.close();
+            storage.writeBatch(batch);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
