@@ -297,7 +297,7 @@ public final class ItemRegistry implements ItemID, IRegistry<String, Item, Class
             register(IRON_GOLEM_SPAWN_EGG, ItemIronGolemSpawnEgg.class);
             register(IRON_HELMET, ItemIronHelmet.class);
             register(IRON_HOE, ItemIronHoe.class);
-            register(IRON_HORSE_ARMOR, ItemIronHorseArmor.class);
+            // register(IRON_HORSE_ARMOR, ItemIronHorseArmor.class);
             register(IRON_INGOT, ItemIronIngot.class);
             register(IRON_LEGGINGS, ItemIronLeggings.class);
             register(IRON_NAUTILUS_ARMOR, ItemIronNautilusArmor.class);
@@ -380,7 +380,7 @@ public final class ItemRegistry implements ItemID, IRegistry<String, Item, Class
             register(NETHERITE_CHESTPLATE, ItemNetheriteChestplate.class);
             register(NETHERITE_HELMET, ItemNetheriteHelmet.class);
             register(NETHERITE_HOE, ItemNetheriteHoe.class);
-            register(NETHERITE_HORSE_ARMOR, ItemNetheriteHorseArmor.class);
+            // register(NETHERITE_HORSE_ARMOR, ItemNetheriteHorseArmor.class);
             register(NETHERITE_INGOT, ItemNetheriteIngot.class);
             register(NETHERITE_LEGGINGS, ItemNetheriteLeggings.class);
             register(NETHERITE_NAUTILUS_ARMOR, ItemNetheriteNautilusArmor.class);
@@ -611,7 +611,7 @@ public final class ItemRegistry implements ItemID, IRegistry<String, Item, Class
             register(COPPER_CHESTPLATE, ItemCopperChestplate.class);
             register(COPPER_HELMET, ItemCopperHelmet.class);
             register(COPPER_LEGGINGS, ItemCopperLeggings.class);
-            register(COPPER_HORSE_ARMOR, ItemCopperHorseArmor.class);
+            // register(COPPER_HORSE_ARMOR, ItemCopperHorseArmor.class);
             register(COPPER_GOLEM_SPAWN_EGG, ItemCopperGolemSpawnEgg.class);
             register(COPPER_NUGGET, ItemNuggetCopper.class);
             register(COPPER_AXE, ItemCopperAxe.class);

@@ -179,6 +179,18 @@ public class JSONScoreboardStorage implements IScoreboardStorage {
                     if (name != null)
                         scorer = new FakeScorer(name);
                     break;
+                case "CHANGE_PLAYER":
+                    if (name != null)
+                        scorer = new PlayerScorer(UUID.fromString(name));
+                    break;
+                case "CHANGE_ENTITY":
+                    if (name != null)
+                        scorer = new EntityScorer(UUID.fromString(name));
+                    break;
+                case "CHANGE_FAKE_PLAYER":
+                    if (name != null)
+                        scorer = new FakeScorer(name);
+                    break;
             }
             if (scorer != null) {
                 scoreboard.addLine(new ScoreboardLine(scoreboard, scorer, score));
