@@ -39,18 +39,6 @@ public abstract class BlockEntitySpawnable extends BlockEntity {
             return;
         }
 
-        UpdateBlockPacket refreshPacket = new UpdateBlockPacket();
-        refreshPacket.setDefinition(new RuntimeBlockDefinition(BlockAir.STATE.blockStateHash()));
-        refreshPacket.getFlags().add(UpdateBlockPacket.Flag.NETWORK);
-        refreshPacket.setBlockPosition(Vector3i.from(this.getFloorX(), this.getFloorY(), this.getFloorZ()));
-
-        UpdateBlockPacket setBlockPacket = new UpdateBlockPacket();
-        refreshPacket.setDefinition(new RuntimeBlockDefinition(this.getBlock().getRuntimeId()));
-        setBlockPacket.getFlags().add(UpdateBlockPacket.Flag.NETWORK);
-        setBlockPacket.setBlockPosition(Vector3i.from(this.getFloorX(), this.getFloorY(), this.getFloorZ()));
-
-        player.sendPacket(refreshPacket);
-        player.sendPacket(setBlockPacket);
         player.sendPacket(getSpawnPacket());
     }
 
