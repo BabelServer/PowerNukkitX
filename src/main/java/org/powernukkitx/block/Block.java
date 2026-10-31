@@ -29,6 +29,7 @@ import org.powernukkitx.metadata.Metadatable;
 import org.powernukkitx.nbt.tag.CompoundTag;
 import org.powernukkitx.nbt.tag.ListTag;
 import org.powernukkitx.nbt.tag.StringTag;
+import org.powernukkitx.nbt.tag.Tag;
 import org.powernukkitx.plugin.Plugin;
 import org.powernukkitx.registry.BlockRegistry;
 import org.powernukkitx.registry.Registries;
@@ -1714,14 +1715,14 @@ public abstract class Block extends Position implements Metadatable, AxisAligned
                 Item itemInHand = player.getInventory().getItemInMainHand();
                 if(itemInHand.isNull()) return false;
 
-                CompoundTag tag = (CompoundTag) itemInHand.getNbtEntry("CanDestroy");
+                Tag tag = (Tag) itemInHand.getNbtEntry("CanDestroy");
                 boolean canBreak = false;
-                if (tag instanceof List<?> list) {
-                    for (Object v : list) {
-                        if (!(v instanceof String stringTag)) {
+                if (tag instanceof ListTag<?> list) {
+                    for (Object v : list.getAll()) {
+                        if (!(v instanceof StringTag stringTag)) {
                             continue;
                         }
-                        Item entry = Item.get(stringTag);
+                        Item entry = Item.get(stringTag.data);
                         if (!entry.isNull() &&
                                 entry.getBlock().getId().equals(this.getId())) {
                             canBreak = true;
